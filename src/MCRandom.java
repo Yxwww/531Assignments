@@ -63,8 +63,11 @@ public class MCRandom {
 		int[] items = random.getUniRnd(n, 0, 20);
 		double[] u = random.getUniRnd(n);
 		
-		for (int i =0; i < n; i++)
-			System.out.println(i + "\t" + items[i] + "\t" + u[i]);
+		for (int i =0; i < n; i++) {
+            System.out.println(i + "\t" + items[i] + "\t" + u[i]);
+            System.out.println(u[i]);
+        }
+
 	}
 	
 }
