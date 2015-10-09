@@ -1,7 +1,18 @@
+/**
+ *  Arthur: Yuxi Wang
+ *  Course: CPSC 531
+ *  Assignment: 1
+ *  Question:   5
+ *  Date: Oct.6th/2015
+ *  Description: Using Monte Carlo Simulation Solve Coin Toss Problem
+ */
+
+
+
 public class Q5{
     public static void main(String[] args){
         System.out.println("Hello world");
-        int numberOfExperiments = 1000000;
+        int numberOfExperiments = 100000000;
 
         MCDice diceInstance = new MCDice();
         System.out.println("Result of "+numberOfExperiments+" experiments yields result of "+
