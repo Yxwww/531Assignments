@@ -85,8 +85,8 @@ class MCKnapsack{
             System.arraycopy(states,0,newStates,0,states.length);
             newStates[pickItem] = 1 - newStates[pickItem]; // flip the state
 
-            System.out.println("Curre: \t"+ Arrays.toString(states));
-            System.out.println("Newer: \t"+Arrays.toString(newStates));
+            //System.out.println("Curre: \t"+ Arrays.toString(states));
+            //System.out.println("Newer: \t"+Arrays.toString(newStates));
             //System.out.println(newState[pickItem]+" - "+states[pickItem]);
             newStateWeight = getWeightFromState(newStates); // get the weight of the new state
             //currentSateWeight = getWeightFromState(states);
@@ -94,25 +94,22 @@ class MCKnapsack{
 
             if(newStateWeight<=capacity){
                 // if feasible, check probability
-                System.out.println(probabilityForIteration[i] + " - "+Math.min(1,Math.exp(getValueFromState(newStates)- getValueFromState(states))));
+
                 if(probabilityForIteration[i] <= Math.min(1,Math.exp(getValueFromState(newStates)- getValueFromState(states)))){
                     // if lambda is less or equal to the min of 1 or e^(Value(newState) - Value(currentState))
                     // If so , we go with newState
-                    if(Math.min(1, Math.exp(getValueFromState(newStates) - getValueFromState(states)))>0.36){
-                        System.out.println("Just do it - " + newStates[pickItem] + " item: "+pickItem);
-                    }
                     System.arraycopy(newStates,0,states,0,states.length);
-                    //System.out.println("JUST DO IT");
-                    //System.out.println(Arrays.toString(states));
-                    //System.out.println("W: "+getWeightFromState(states)+" - V: "+getValueFromState(states));
-                }else{
-                    System.out.println(probabilityForIteration[i] + " > " +(Math.min(1,Math.exp(getValueFromState(newStates)- getValueFromState(states)))) );
+
+
+
+                }/*else{
+                    //System.out.println(probabilityForIteration[i] + " > " +(Math.min(1,Math.exp(getValueFromState(newStates)- getValueFromState(states)))) );
                     //System.out.println(getValueFromState(newStates) + " - "+ getValueFromState(states));
                     //System.out.println(getWeightFromState(newStates) + " - "+ getWeightFromState(states));
-                }
-            }else{
-                System.out.println("Not Feasible");
-            }
+                }*/
+            }/*else{
+                //System.out.println("Not Feasible");
+            }*/
             //System.out.println();
         } // END of FOR loop
         return states;
