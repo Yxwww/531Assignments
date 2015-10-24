@@ -118,7 +118,7 @@ class MCKnapsack{
         int weight=0;
         for(int i=0;i<states.length;i++){
             if(states[i]==1){
-                weight+=this.arrayOfItemWeights[this.randomNumberForSelection[i]];
+                weight+=this.arrayOfItemWeights[i];
             }
         }
         return weight;
@@ -128,7 +128,7 @@ class MCKnapsack{
         int value=0;
         for(int i=0;i<states.length;i++){
             if(states[i]==1){
-                value+=this.arrayOfItemValues[this.randomNumberForSelection[i]];
+                value+=this.arrayOfItemValues[i];
             }
         }
         return value;
