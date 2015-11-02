@@ -1,6 +1,6 @@
-
+package assignment_1;
 /**
- * MCRandom Class
+ * assignment_1.MCRandom Class
  * 
  * @author 	Majid Ghaderi
  * @version	1.0, Sep 25, 2015
@@ -20,7 +20,7 @@ public class MCRandom {
 	
 	
     /**
-     * MCRandom constructor to initialize random number generators.
+     * assignment_1.MCRandom constructor to initialize random number generators.
 	 *
      */
 	public MCRandom() {
@@ -52,7 +52,7 @@ public class MCRandom {
 	
 	
     /**
-     * A simple test driver showing how to use MCRandom class.
+     * A simple test driver showing how to use assignment_1.MCRandom class.
 	 *
      */
 	public static void main(String[] args) {

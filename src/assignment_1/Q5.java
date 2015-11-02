@@ -1,3 +1,5 @@
+package assignment_1;
+
 /**
  *  Arthur: Yuxi Wang
  *  Course: CPSC 531

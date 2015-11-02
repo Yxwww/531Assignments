@@ -1,7 +1,7 @@
-
+package assignment_2;
 
 /**
- * Report Class
+ * assignment_2.Report Class
  * 
  * @author 	Majid Ghaderi
  * @version	1.0, Oct 6, 2015
@@ -23,5 +23,12 @@ public class Report {
 	
 	// chef utilization factor
 	public double chefUtilization = 0;
-	
+
+
+    public void WriteState(){
+        System.out.println("AVG#Customer: " + this.numOfCustomers + "\tAVGWaitTimeOfPatient" +
+                patientCustomersWait + "\tAVEWaitTimeImpatient: " + impatientCustomersWait +
+                "\t%ImpatientCustomers: " + impatientCustomersRatio + "\tChefUtilization: " + chefUtilization);
+    }
 }
+

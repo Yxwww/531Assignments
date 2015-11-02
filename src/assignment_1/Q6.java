@@ -1,3 +1,5 @@
+package assignment_1;
+
 import java.util.Arrays;
 
 /**
@@ -14,7 +16,7 @@ import java.util.Arrays;
 public class Q6{
     public static void main(String[] args){
         MCKnapsack knapsack = new MCKnapsack();
-        int[] resultState = knapsack.solve(50, 15, new int[]{1,2,3,4,5}, new int[]{5,4,3,2,1});
+        int[] resultState = knapsack.solve(10000000, 10, new int[]{2,2,2,2,2}, new int[]{5,4,3,2,1});
         //System.out.println(knapsack.getWeightFromState(new int[1]))
         System.out.println("Current value of state: "+ knapsack.getValueFromState(resultState)+" - " +
                 "Weight: "+knapsack.getWeightFromState(resultState) + "\n Result State: "+Arrays.toString(resultState));
@@ -70,7 +72,7 @@ class MCKnapsack{
         System.arraycopy(arrayOfRandomNumber,0,this.randomNumberForSelection,0,arrayOfRandomNumber.length);
         System.out.println("Init random probability for pick index array");
 
-        System.out.println(Arrays.toString(this.randomNumberForSelection));
+        //System.out.println(Arrays.toString(this.randomNumberForSelection));
         //System.out.println(Arrays.toString(probabilityForIteration));
         System.out.println();
 
