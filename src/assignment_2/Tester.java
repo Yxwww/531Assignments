@@ -13,15 +13,16 @@ package assignment_2;
 public class Tester {
 	
 	public static void main(String[] args) {
-        /*PolarBurger sim = new PolarBurger(0.5,0.6,0.2);
-        sim.run(100,135);
-        sim.getReport().WriteState();
-        */
+        PolarBurger simTest = new PolarBurger(0.5,0.6,0.2);
+        simTest.run(100,135);
+        simTest.getReport().WriteState();
+
 
 		// Final tests
-		int[] seed = {135, 351, 739, 937};
-		int[] time = {1000, 10000};
-		
+		/*
+        int[] seed = {135, 351, 739, 937};
+		//int[] time = {1000, 10000};
+        int[] time = {0};
 		PolarBurger sim = new PolarBurger(0.5, 0.6, 0.2);
 		
 		// start and run the simulation
@@ -37,6 +38,7 @@ public class Tester {
 			
 			System.out.printf("Sim Length = %d \t Avg No Customers = %5.2f \n", t, numOfCustomers / seed.length);
 		}
+		*/
 	}
 	
 }

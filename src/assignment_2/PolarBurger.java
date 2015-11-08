@@ -86,7 +86,7 @@ public class PolarBurger {
                 if(tempCustomer.served==false && tempCustomer.impatient==false) {
                     // check if this customer is still waiting ie not served && not left
                     if ((timeIteration - tempCustomer.arrival) > tempCustomer.patience) {
-                        //System.out.println(tempCustomer.ID + " Impatient!! since she arrives at "+tempCustomer.arrival +" waited for "+(timeIteration - tempCustomer.arrival));
+                        System.out.println(tempCustomer.ID + " Impatient!! since she arrives at "+tempCustomer.arrival +" waited for "+(timeIteration - tempCustomer.arrival));
                         customerQueue.get(tempCustomer.ID).impatient = true;
                         customerQueue.get(tempCustomer.ID).waitTime = (int)customerQueue.get(tempCustomer.ID).patience;
                         numberOfCustomerLeft++;
@@ -110,7 +110,7 @@ public class PolarBurger {
                     firstUnServedPatientCustomer.endServiceTime = timeIteration+(int)firstUnServedPatientCustomer.serviceTime;
                     //customerQueue.get();
                     customerBeingServed = firstUnServedPatientCustomer;
-                    //System.out.println("Serving customer:" + customerBeingServed.ID + " at time " + timeIteration);
+                    System.out.println("Serving customer:" + customerBeingServed.ID + " at time " + timeIteration);
                     this.busy = true;
                     busyTimeCounter++;
                 }
@@ -130,7 +130,7 @@ public class PolarBurger {
                         firstUnServedPatientCustomer.endServiceTime = timeIteration+(int)firstUnServedPatientCustomer.serviceTime;
                         //customerQueue.get();
                         customerBeingServed = firstUnServedPatientCustomer;
-                        //System.out.println("Serving customer:" + customerBeingServed.ID + " at time " + timeIteration);
+                        System.out.println("Serving customer:" + customerBeingServed.ID + " at time " + timeIteration);
                         this.busy = true;
                         busyTimeCounter++;
                     }
@@ -139,7 +139,7 @@ public class PolarBurger {
                     busyTimeCounter++;
                 }
             }
-            //System.out.println(numberOfCustomersJoined + " - " + numberOfCustomerLeft);
+            System.out.println(numberOfCustomersJoined + " - " + numberOfCustomerLeft);
             this.numberOfCustomerIterationSum += (numberOfCustomersJoined-numberOfCustomerLeft);
         }// END of time interation
         //this.writeAllCustomerState(this.customerQueue);
