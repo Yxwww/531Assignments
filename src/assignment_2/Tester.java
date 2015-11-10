@@ -13,10 +13,15 @@ package assignment_2;
 public class Tester {
 	
 	public static void main(String[] args) {
-        PolarBurger simTest = new PolarBurger(0.5,0.6,0.2);
+        /*PolarBurger simTest = new PolarBurger(0.5,0.6,0.2);
         simTest.run(100,135);
         simTest.getReport().WriteState();
-
+        */
+        PolarBurger sim = new PolarBurger(0.5, 0.6, 0.2);
+        RngStream random = new RngStream();
+        for(int i=0;i<100;i++){
+            System.out.print(sim.getPoissonRandom(0.5,random) +" ");
+        }
 
 		// Final tests
 		/*

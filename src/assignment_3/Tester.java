@@ -1,6 +1,9 @@
 
 
 package assignment_3;
+
+import assignment_2.*;
+
 /**
  * A simple test driver
  * 
@@ -24,6 +27,15 @@ public class Tester {
         int[] seed = {135, 351, 739, 937};
         int queue = 10;
         PolarBurger sim = new PolarBurger(queue, lambda, n, c, mu, sigma, gamma);
+        sim.run(10,135);
+
+        for(int i=0;i<100; i++){
+            System.out.print(" "+sim.getImpatienceExpoRandom());
+        }
+        //sim.randStream.advanceState(5,3);
+
+        //System.out.println(sim.randStream.randU01());
+
         // start and run the simulation
         // compute utilization for different queue lengths
 
