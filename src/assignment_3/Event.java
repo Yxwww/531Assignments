@@ -8,14 +8,18 @@ public class Event {
     int ID;
     double time;
     EventType eventType;
+    int eventSubject;       // 1 - Batch, 2 - Customer,
+    int subjectID;
 
-    public Event(int ID, double time, EventType e){
+    public Event(int ID, double time, EventType e , int subject,int subjectID ){
         this.ID = ID;
         this.time = time;
         this.eventType = e;
+        this.eventSubject = subject;
+        this.subjectID = subjectID;
     }
     public void writeState(){
-        System.out.println("EventID: "+this.ID+"\ttime:"+this.time+"\tEventType: "+this.eventType);
+        System.out.println("EventID: "+this.ID+"\ttime:"+this.time+"\tEventType: "+this.eventType+"\tsubject: "+this.eventSubject+"\tID:"+this.subjectID);
     }
 
 }

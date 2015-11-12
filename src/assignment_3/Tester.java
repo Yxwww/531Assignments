@@ -26,12 +26,16 @@ public class Tester {
         // seeds for 4 runs
         int[] seed = {135, 351, 739, 937};
         int queue = 10;
-        PolarBurger sim = new PolarBurger(queue, lambda, n, c, mu, sigma, gamma);
-        sim.run(10,135);
 
-        for(int i=0;i<100; i++){
+
+
+        PolarBurger sim = new PolarBurger(queue, lambda, n, c, mu, sigma, gamma);
+        //sim.run(100,135);
+        sim.createLeftToChefEvent();
+
+        /*for(int i=0;i<100; i++){
             System.out.print(" "+sim.getImpatienceExpoRandom());
-        }
+        }*/
         //sim.randStream.advanceState(5,3);
 
         //System.out.println(sim.randStream.randU01());

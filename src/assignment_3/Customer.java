@@ -6,6 +6,7 @@ package assignment_3;
 
 public class Customer {
     int ID;
+    int batchID;
     double patience;
     double serviceTime;
 
@@ -17,7 +18,7 @@ public class Customer {
     double waitTime;
     double startServiceTime;   // wait for how long
     double endServiceTime;
-    public Customer(int id, double p, double s, double a){
+    public Customer(int id, double p, double s, double a, int b){
         ID = id;
         patience = p;
         serviceTime = s;
@@ -28,6 +29,7 @@ public class Customer {
         arrival = a;
         startServiceTime = -1;
         endServiceTime = -1;
+        this.batchID = b;
     }
 
     /**
@@ -45,7 +47,7 @@ public class Customer {
         this.status = c.status;
     }
     public void getSate(){
-        System.out.println("CustomerID: "+ID + "\tPatience:" + this.patience+"\tStatus:"+this.status + "\tService: "
+        System.out.println("CustomerID(B:"+this.batchID+"): "+ID + "\tPatience:" + this.patience+"\tStatus:"+this.status + "\tService: "
                 + serviceTime + "\tImpatient: " + this.impatient +"\tServed: "+this.served +"\tArriveAt: "+this.arrival +" Waited: "+this.waitTime+
             " EndService: "+this.endServiceTime
         );
