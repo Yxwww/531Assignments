@@ -17,7 +17,8 @@ public class Customer {
     CustomerStatus status;
     double waitTime;
     double startServiceTime;   // wait for how long
-    double endServiceTime;
+    double endCashierServiceTime;
+    double endChefServiceTime;
     public Customer(int id, double p, double s, double a, int b){
         ID = id;
         patience = p;
@@ -28,7 +29,8 @@ public class Customer {
         this.status = CustomerStatus.Waiting;
         arrival = a;
         startServiceTime = -1;
-        endServiceTime = -1;
+        endCashierServiceTime = -1;
+        endChefServiceTime = -1;
         this.batchID = b;
     }
 
@@ -49,7 +51,7 @@ public class Customer {
     public void getSate(){
         System.out.println("CustomerID(B:"+this.batchID+"): "+ID + "\tPatience:" + this.patience+"\tStatus:"+this.status + "\tService: "
                 + serviceTime + "\tImpatient: " + this.impatient +"\tServed: "+this.served +"\tArriveAt: "+this.arrival +" Waited: "+this.waitTime+
-            " EndService: "+this.endServiceTime
+            " EndService: "+this.endCashierServiceTime
         );
 
     }

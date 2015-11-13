@@ -2,8 +2,6 @@
 
 package assignment_3;
 
-import assignment_2.*;
-
 /**
  * A simple test driver
  * 
@@ -30,8 +28,8 @@ public class Tester {
 
 
         PolarBurger sim = new PolarBurger(queue, lambda, n, c, mu, sigma, gamma);
-        //sim.run(100,135);
-        sim.createLeftToChefEvent();
+        sim.run(50,135);
+        //sim.createLeaveToChefEvent();
 
         /*for(int i=0;i<100; i++){
             System.out.print(" "+sim.getImpatienceExpoRandom());

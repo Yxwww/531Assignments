@@ -28,8 +28,8 @@ public class PolarBurger {
     Random randForNormal;
 
     /* store state */
-    boolean chefBusy;
-    boolean cashierBusy;
+    boolean chefAvailable;
+    boolean cashierAvailable;
 
     Customer customerServedByCashier;
     Customer customerServedByChef;
@@ -78,6 +78,8 @@ public class PolarBurger {
         eventCounter    = 0;
         timeCounter     = 0;
         maxRunTime      = 0;
+        this.chefAvailable = true;
+        this.cashierAvailable = true;
 	}
 	
     /**
@@ -99,22 +101,27 @@ public class PolarBurger {
         batchCounter    = 0;
         eventCounter    = 0;
         this.maxRunTime = time;
+        this.chefAvailable = true;        // cashier and chef should be not busy
+        this.cashierAvailable = true;
         // END of Init
 
         //TODO: Simulation
         createBatch();  // create first batch with arrival event
-        createLeftToChefEvent();
+        createLeaveToChefEvent();
+        //this.writeAllEventsState(this.events);
         while(Math.ceil(timeCounter)<time){ // while still have more time
+            this.writeAllEventsState(this.events);
             Event nextEvent = this.events.remove();
-            System.out.println("Time: "+this.timeCounter);
+
+            //this.writeAllEventsState(this.events);
             /*
                 Check if events type of the next event
                     if event is batch Arrival
              */
             if(nextEvent.eventType==EventType.Arrival) {
-                System.out.println("<<<<<<<<  Arrival  >>>>>>>>");
+                System.out.println("<<<<<<<<  BatchArrival  >>>>>>>>");
                 this.timeCounter = nextEvent.time;    // update time before creating event for the next batch
-
+                System.out.println("Time: "+this.timeCounter);
                 System.out.println("Arrival of: " + nextEvent.subjectID);
                 Batch arrivalBatch =this.batchQueue.get(nextEvent.subjectID);
                 /*
@@ -126,7 +133,37 @@ public class PolarBurger {
                     //arrivalBatch.changeAllCustomerStatus(CustomerStatus.Le);
                 }
                 createBatch();                      // schedule the next event
+            }else if(nextEvent.eventType == EventType.LeaveToChef){
+                // means cashier will be available, proceed generate next leavetochef event
+                //createLeaveToChefEvent();
+                this.cashierAvailable = true;
+                this.chefAvailable = false;
+                System.out.println("<<<<<<<<  Leave ToChef  >>>>>>>>");
+                this.timeCounter = nextEvent.time;    // update time
+                System.out.println("Time: "+this.timeCounter);
+                System.out.println("leave to chef customer: " + nextEvent.subjectID);
+                double normalRandom = -1;
+                do{normalRandom = getChefNormalRandom();}while(normalRandom<0);
+                System.out.println("Got time for chef normalRandom: "+normalRandom);
+                this.customerServedByChef = this.customerServedByCashier;
+                this.customerServedByChef.status = CustomerStatus.ChefService;
+                updateParentBatchStatus(this.customerServedByChef);
+                this.customerServedByChef.endChefServiceTime = this.timeCounter+ normalRandom;
+                Event leaveSystemEvent = new Event(eventCounter,this.timeCounter+normalRandom,EventType.LeaveSystem,2,this.customerServedByChef.ID);
+                eventCounter++;
+                insertEventToListWithChronologicalOrder(leaveSystemEvent);
+                // create the next leaveToChefEvent
+                createLeaveToChefEvent();
+            }else if(nextEvent.eventType == EventType.LeaveSystem){
+                this.chefAvailable = true;
+                this.customerServedByChef.status = CustomerStatus.LeftHappily;
+                updateParentBatchStatus(this.customerServedByChef);
+                System.out.println("<<<<<<<<  Leave System  >>>>>>>>");
+                this.timeCounter = nextEvent.time;    // update time
+                System.out.println("Time: "+this.timeCounter+" customerID: "+nextEvent.subjectID);
+                createLeaveToChefEvent();
             }
+
 
 
 
@@ -159,33 +196,51 @@ public class PolarBurger {
 		return utilization;
 	}
 
-    public void createLeftToChefEvent(){
-        //Customer firstUnServedWaitingCustomer = this.customerQueue.get(getFirstCustomerIDWithStatus(CustomerStatus.Waiting));
-        //System.out.pritnln();C
-        Event e1 = new Event(1,0.1,EventType.Arrival,1,0);
-        Event e2 = new Event(2,0.2,EventType.Arrival,1,0);
-        Event e3 = new Event(3,0.3,EventType.Arrival,1,0);
-        this.events.add(e1);
-
-        Event e4 = new Event(4,0.3,EventType.Arrival,1,0);
-        int t4  = getEventToChronologicalIndex(e4);
-        System.out.println("(t4) get index: " + t4);
-        this.events.add(t4,e4);
-
-        int t2 = getEventToChronologicalIndex(e2);
-        System.out.println("(t2) get index: " + t2);
-        this.events.add(getEventToChronologicalIndex(e2),e2);
-
-        int t3 = getEventToChronologicalIndex(e3);
-        System.out.println("(t3) get index: " + t3);
-        this.events.add(getEventToChronologicalIndex(e3),e3);
-
-        writeAllEventsState(this.events);
-
-
+    public void updateParentBatchStatus(Customer customerOfInterest){
+        Batch parentBatch = this.batchQueue.get(customerOfInterest.batchID);
+        if(customerOfInterest.ID==parentBatch.lastIDInBatch-1){
+            parentBatch.status = customerOfInterest.status;
+        }
     }
 
-    public void arrangeServiceEventsForBatch(int batchID){
+    public void createLeaveToChefEvent(){
+
+        int foundFirstUnServedWaitingCustomerID = getFirstCustomerIDWithStatus(CustomerStatus.Waiting);
+        if(foundFirstUnServedWaitingCustomerID == -1){
+            System.out.println("All customer are served");
+            this.writeAllCustomerState(this.customerQueue);
+            System.exit(-1);
+        }
+        Customer firstUnServedWaitingCustomer = this.customerQueue.get(foundFirstUnServedWaitingCustomerID);
+
+        if(this.cashierAvailable){ // if chef is not busy
+            // then check if chef is busy, if chef is busy then wait until chef is not busy
+            if(this.chefAvailable){
+                // if chef is available, cashier should start serving current customer
+                Event leftToChefEvent = null;
+                if(this.timeCounter>firstUnServedWaitingCustomer.arrival){
+                    //if the customer arrive after current time counter, for instance during initialization
+                    leftToChefEvent = new Event(eventCounter,this.timeCounter+this.cashierServiceTime,EventType.LeaveToChef,2,firstUnServedWaitingCustomer.ID);
+                }else{
+                    leftToChefEvent = new Event(eventCounter,firstUnServedWaitingCustomer.arrival+this.cashierServiceTime,EventType.LeaveToChef,2,firstUnServedWaitingCustomer.ID);
+                }
+                System.out.println("Serving: "+firstUnServedWaitingCustomer.ID);
+                insertEventToListWithChronologicalOrder(leftToChefEvent);
+                eventCounter++;
+                firstUnServedWaitingCustomer.endCashierServiceTime = leftToChefEvent.time;
+                firstUnServedWaitingCustomer.status = CustomerStatus.CashService;
+                batchQueue.get(firstUnServedWaitingCustomer.batchID).status= CustomerStatus.CashService;
+                this.customerServedByCashier = firstUnServedWaitingCustomer;
+                this.cashierAvailable = false;
+            }else{
+
+            }
+        }else{
+            // if the cashier is not available，schedule leftToChef when cashier is available
+            /*Event leftToChefEvent = new Event(eventCounter,this.customerServedByCashier.endCashierServiceTime,EventType.LeaveToChef,2,firstUnServedWaitingCustomer.ID);
+            insertEventToListWithChronologicalOrder(leftToChefEvent);
+            eventCounter++;*/
+        }
 
     }
 
@@ -216,37 +271,45 @@ public class PolarBurger {
 
     public int getFirstCustomerIDWithStatus(CustomerStatus s){
         ListIterator<Customer> customerListIterator = this.customerQueue.listIterator();
+        //this.writeAllCustomerState(this.customerQueue);
         while (customerListIterator.hasNext()) {
             //customerIterator.next().getSate();
             Customer customerElement = customerListIterator.next();
             // if the batch is waiting and the time has exceed the
             if(customerElement.status == s){
-                return customerElement.batchID;
+                return customerElement.ID;
             }
         }
         return -1;
     }
+
+    /*
+        Little helper function to make sure events list are ordered in chronological order
+     */
+    public void insertEventToListWithChronologicalOrder(Event newEvent){
+        // avoid insert while iterate through list, bad practice.
+        this.events.add(getEventToChronologicalIndex(newEvent),newEvent);
+    }
     public int getEventToChronologicalIndex(Event newEvent){
-        int correctIndex = 0;
+        //int correctIndex = 0;
         ListIterator<Event> eventListIterator = this.events.listIterator();
         for(int i=0; i<this.events.size(); i++)
         {
             Event current = this.events.get(i);
             if(i==this.events.size()-1){
-                if(newEvent.time>current.time){
-                    return current.ID;
-                }else{
-                    return current.ID-1;
-                }
+                if(newEvent.time>current.time)
+                    return i+1;
+                else
+                    return i;
             }else{
                 Event next = this.events.get(i+1);
                 if(newEvent.time>current.time&&newEvent.time<next.time){
-                    return current.ID;
+                    return i+1;
                 }
             }
 
         }
-        return 0;
+        return -1;
     }
 
 

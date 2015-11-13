@@ -17,6 +17,7 @@ public class Event {
         this.eventType = e;
         this.eventSubject = subject;
         this.subjectID = subjectID;
+        //System.out.println("Making event for: "+this.eventSubject+"-"+ subjectID);
     }
     public void writeState(){
         System.out.println("EventID: "+this.ID+"\ttime:"+this.time+"\tEventType: "+this.eventType+"\tsubject: "+this.eventSubject+"\tID:"+this.subjectID);
