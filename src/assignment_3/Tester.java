@@ -13,9 +13,11 @@ package assignment_3;
 public class Tester {
 	
 	public static void main(String[] args) {
-/*
+
+
+    /*
         double lambda = 1.0/5;
-        int n = 100;
+        int n = 4;
         int c = 1;
         double mu = 5;
         double sigma = 1;
@@ -23,20 +25,22 @@ public class Tester {
         int time = 10;
 
         // seeds for 4 runs
-        int[] seed = {135, 351, 739, 937};
+        //int[] seed = {135, 351, 739, 937};
+        int seed = 135;
         int queue = 10;
 
 
 
         PolarBurger sim = new PolarBurger(queue, lambda, n, c, mu, sigma, gamma);
-        /*double util = 0;
-        for (int s : seed)
-            util += sim.run(time, s);
+        for(int i=0;i<5;i++){
+            System.out.print(sim.randStream.randU01()+" ");
+        }
+        sim.randStream.writeStateFull();
+        sim.randStream.resetNextSubstream();
+        sim.randStream.writeStateFull();
 
-        // print the average utilization
-        System.out.printf(" queue = %d \t utilization = %f \n", queue, util / seed.length);
-        System.out.println("Util: "+sim.run(1,135));*/
-
+        System.out.println("Util: "+sim.run(10,135));
+        */
 
         double lambda = 0.2;//1.0 / 5;
         int n = 4;

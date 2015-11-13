@@ -25,6 +25,10 @@ public class PolarBurger {
 
 
     RngStream randStream;
+    RngStream randStreamForArrival;
+    RngStream randStreamForPatience;
+    RngStream randStreamForUniform;
+    //RngStream ran
     Random randForNormal;
 
     /* store state */
@@ -72,6 +76,9 @@ public class PolarBurger {
         batchQueue = new LinkedList<Batch>();
         this.events = new LinkedList<Event>();
         this.randStream = new RngStream("Origin");
+        randStreamForArrival = new RngStream("Arrival");
+        randStreamForPatience = new RngStream("Patience");
+        randStreamForUniform = new RngStream("UniformCustomNumber");
         this.randForNormal = new Random();
         customerCounter = 0;
         batchCounter    = 0;
@@ -97,9 +104,20 @@ public class PolarBurger {
         batchQueue = new LinkedList<Batch>();
         this.events = new LinkedList<Event>();
         double utilization = 0;
-        this.randStream.setSeed(new long[]{seed,seed,seed,seed,seed,seed}); // set seed for uniform random
+        // Initialize all the random streams
+        this.randStreamForArrival.setSeed(new long[]{seed,seed,seed,seed,seed,seed});
+        this.randStreamForArrival.resetNextSubstream();
+        //this.randStreamForArrival.writeStateFull();
+        this.randStreamForPatience.setSeed(new long[]{seed,seed,seed,seed,seed,seed});
+        this.randStreamForPatience.resetNextSubstream();
+        this.randStreamForPatience.resetNextSubstream();
+        // the rand stream for Uniform distribution, we take the third substream
+        this.randStreamForUniform.setSeed(new long[]{seed,seed,seed,seed,seed,seed});
+        this.randStreamForUniform.resetNextSubstream();
+        this.randStreamForUniform.resetNextSubstream();
+        this.randStreamForUniform.resetNextSubstream();
+        //this.randStreamForUniform.writeStateFull();
         randForNormal.setSeed(seed);     //set seed for Gaussian
-        this.randStream.resetStartStream();
         timeCounter = 0;     // How long since the simulation started.
         customerCounter = 0;
         batchCounter    = 0;
@@ -357,15 +375,15 @@ public class PolarBurger {
      */
     public double getArrivalExpoRandom (){
         //System.out.println("**");
-        return Math.log(1-this.randStream.randU01())/(-this.meanBatchArrivalRate);
+        return Math.log(1-this.randStreamForArrival.randU01())/(-this.meanBatchArrivalRate);
     }
     public double getImpatienceExpoRandom (){
         //System.out.println("^^");
-        return Math.log(1-this.randStream.randU01())/(-this.impatienceTimeRate);
+        return Math.log(1-this.randStreamForPatience.randU01())/(-this.impatienceTimeRate);
     }
 
     public int getCustomerNumberUniformRandom(){
-        return (int)Math.ceil(this.customerInBatchUniformParam*this.randStream.randU01());
+        return (int)Math.ceil(this.customerInBatchUniformParam*this.randStreamForUniform.randU01());
     }
     public double getChefNormalRandom(){
         return this.randForNormal.nextGaussian()*this.meanChefServiceStd+this.meanChefServiceTime;
