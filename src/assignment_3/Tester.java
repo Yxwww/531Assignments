@@ -51,8 +51,8 @@ public class Tester {
         int time = 1000;
 
         // seeds for 4 runs
-        int[] seed = {135, 351, 739, 937};
-
+        int[] seed = {135, 351, 739, 937, 227};
+        double[] results = new double[100];
         // start and run the simulation
         // compute utilization for different queue lengths
         for (int queue = 1; queue < 100; queue++) {
@@ -60,11 +60,18 @@ public class Tester {
 
             // compute average over 4 runs
             double util = 0;
-            for (int s : seed)
-                util += sim.run(time, s);
-
+            for (int s : seed){
+                double result = sim.run(time, s);
+                util += result;
+                System.out.println(result+" ");
+            }
+            results[queue] = util / seed.length;
+            if(Math.abs(results[queue]-results[queue-1])<=0.005){
+                break;
+            }
             // print the average utilization
-            System.out.printf(" queue = %d \t utilization = %f \n", queue, util / seed.length);
+            System.out.printf(" queue = %d \t utilization = %f \n\n", queue, util / seed.length);
+
         }
 
     }
