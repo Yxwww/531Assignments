@@ -1,8 +1,5 @@
 package assignment_3;
 
-
-import assignment_2.*;
-
 /**
  * Created by Yuxibro on 15-11-09.
  */
