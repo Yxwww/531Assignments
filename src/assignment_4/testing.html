@@ -20,6 +20,9 @@
         var number = 0;
         var currentSum = 0;
         var counter = 0;
+        var knownP = 0.12;
+        var frequencyArr = [];
+        var sumExpected = 0;
         console.log(dataLines);
         dataLines.forEach(function(line){
             //console.log(line.split("\t"));
@@ -37,23 +40,24 @@
             console.log("Fn("+counter+")="+fn);
             var fn_1 = Math.log(1-fn)/Math.log(1-0.12)
             console.log("Fn-1("+counter+")="+fn_1);
+            var expectation = Math.round(200*knownP*(Math.pow(1-knownP,counter))*100)/100;
+            $('textarea').val($('textarea').val() + "\n"+(counter+1)+" - "+fn_1 +" Frequency: "+frequency+" "+expectation)
+            console.log(frequency+" "+expectation);
+            frequencyArr.push({"O":frequency,"E":expectation});
+            sumExpected+= expectation
             counter++;
-            $('textarea').val($('textarea').val() + "\n"+counter+" "+fn_1)
         })
-        console.log(result/200 + ' - '+ 1/(result/200) +" Counter: "+number);
-
-
+        console.log(sumExpected);
 
         var n = 200;
         var p =1/result*200;
-        result = 0
-        for(var i=1;i<=30;i++){
-            $('textarea').val($('textarea').val() + "\n"+Math.round(200*p*(Math.pow(1-p,i-1))*100)/100);
-            //console.log(p+" - "+ );
-            result+=Math.round(200*p*(Math.pow(1-p,i-1))*100)/100;
-        }
-        console.log(result);
-        console.log(1-Math.pow(1-p,30));
+        console.log(p);
+        console.log(frequencyArr);
+        // PICK: 30
+        frequencyArr.forEach(function(line){
+            $('textarea').val($('textarea').val()+"\n"+line.O+"\t"+line.E+"\t"+Math.pow(line.O-line.E,2)/line.E);
+        })
+        
 
     });
 
